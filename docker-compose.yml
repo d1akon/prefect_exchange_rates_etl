@@ -1,0 +1,72 @@
+version: '2.0'
+
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=admin123
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    restart: always
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  prefect:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prefect
+    volumes:
+      - .:/opt/prefect
+    environment:
+      - PREFECT_ORION_UI_API_URL=http://localhost:4200/api
+      - API_KEY=[YOUR_API_KEY]
+      - PREFECT_ORION_DATABASE_CONNECTION_URL=postgresql+asyncpg://postgres:postgres@postgres/mydatabase
+    ports:
+      - "4200:4200"
+    depends_on:
+      - minio
+      - postgres
+
+  test_runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/opt/prefect
+    environment:
+      - API_KEY=[YOUR_API_KEY]
+      - MINIO_ACCESS_KEY=admin
+      - MINIO_SECRET_KEY=admin123
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - MINIO_ENDPOINT=minio:9000
+      - PYTHONPATH=/opt/prefect 
+    depends_on:
+      - minio
+      - postgres
+    entrypoint: ["bash", "./run_tests.sh"]
+
+volumes:
+  minio_data:
+  postgres_data:
