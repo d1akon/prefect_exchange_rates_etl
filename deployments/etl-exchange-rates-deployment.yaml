@@ -1,0 +1,56 @@
+###
+### A complete description of a Prefect Deployment for flow 'ETL Exchange Rates Flow'
+###
+name: etl-exchange-rates-deployment
+description: null
+version: e9c236362e2358fabc6c42c4219051b5
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: default-agent-pool
+tags: []
+parameters:
+  start_date: null
+  end_date: null
+schedule:
+  cron: 0 2 * * *
+  timezone: America/Argentina/Buenos_Aires
+  day_or: true
+is_schedule_active: true
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: ETL Exchange Rates Flow
+manifest_path: null
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  _block_document_id: d0ecd022-dc86-4f95-94b5-e6e3d3674db3
+  _block_document_name: anonymous-4cb3c032-2dcd-4044-b834-36e103af69c1
+  _is_anonymous: true
+  block_type_slug: process
+  _block_type_slug: process
+storage: null
+path: /opt/prefect
+entrypoint: flows/etl_exchange_rates_flow.py:etl_exchange_rates_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    start_date:
+      title: start_date
+      position: 0
+      type: string
+    end_date:
+      title: end_date
+      position: 1
+      type: string
+  required: null
+  definitions: null
+timestamp: '2024-10-12T19:49:53.256723+00:00'

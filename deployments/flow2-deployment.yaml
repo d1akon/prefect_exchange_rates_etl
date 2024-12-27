@@ -1,0 +1,43 @@
+###
+### A complete description of a Prefect Deployment for flow 'Flow2'
+###
+name: flow2-deployment
+description: null
+version: 1b0e66621cf1455ca7121fdcc58fcf2e
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: default-agent-pool
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: true
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: Flow2
+manifest_path: null
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  _block_document_id: e168dbb3-9aca-41ca-bab1-711adc5a32b3
+  _block_document_name: anonymous-76ee8830-09a9-4738-a18a-1f9f0f1d52d4
+  _is_anonymous: true
+  block_type_slug: process
+  _block_type_slug: process
+storage: null
+path: /opt/prefect
+entrypoint: flows/flow2.py:flow2
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null
+timestamp: '2024-10-12T19:49:49.015908+00:00'
